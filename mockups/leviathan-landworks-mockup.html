@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greenwood Landscaping — Charlottesville, VA</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f0e;--bg2:#161614;--bg3:#1e1e1b;--bg4:#282824;
+  --amber:#d4a017;--amber-light:#e8b92e;--amber-dark:#b8860b;--amber-glow:rgba(212,160,23,0.15);
+  --clay:#8b5e3c;--clay-light:#a67c5b;--rust:#6b3a2a;
+  --text:#f0ece4;--text-dim:#a8a49a;--text-muted:#706c64;
+  --green-dark:#2d3a2a;--green:#4a6741;
+  --font-display:'Georgia','Times New Roman',serif;
+  --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  --font-mono:'SF Mono','Fira Code','Courier New',monospace;
+  --nav-height:64px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--font-body);
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+/* Grain overlay */
+body::after{
+  content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:9999;opacity:0.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size:128px 128px;
+}
+
+/* NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-height);
+  background:rgba(15,15,14,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(212,160,23,0.12);z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1rem,4vw,3rem);
+}
+.nav-logo{
+  font-family:var(--font-display);font-size:1.1rem;font-weight:700;
+  color:var(--amber);letter-spacing:0.08em;text-transform:uppercase;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links li{}
+.nav-links a{
+  display:block;padding:0.5rem 1.2rem;color:var(--text-dim);
+  text-decoration:none;font-size:0.85rem;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;
+  transition:color 0.3s;position:relative;cursor:pointer;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:1.2rem;right:1.2rem;
+  height:2px;background:var(--amber);transform:scaleX(0);
+  transition:transform 0.3s ease;transform-origin:center;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a.active::after{transform:scaleX(1)}
+
+/* Mobile menu */
+.hamburger{
+  display:none;background:none;border:none;cursor:pointer;
+  width:32px;height:32px;position:relative;
+}
+.hamburger span{
+  display:block;width:22px;height:2px;background:var(--text);
+  position:absolute;left:5px;transition:all 0.3s;
+}
+.hamburger span:nth-child(1){top:9px}
+.hamburger span:nth-child(2){top:15px}
+.hamburger span:nth-child(3){top:21px}
+.hamburger.open span:nth-child(1){top:15px;transform:rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){top:15px;transform:rotate(-45deg)}
+
+.mobile-menu{
+  display:none;position:fixed;top:var(--nav-height);left:0;right:0;
+  background:rgba(15,15,14,0.97);backdrop-filter:blur(20px);
+  padding:1rem 0;border-bottom:1px solid rgba(212,160,23,0.12);
+  z-index:999;
+}
+.mobile-menu.open{display:block}
+.mobile-menu a{
+  display:block;padding:1rem 2rem;color:var(--text-dim);
+  text-decoration:none;font-size:0.95rem;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;
+  border-left:3px solid transparent;transition:all 0.2s;cursor:pointer;
+}
+.mobile-menu a.active{color:var(--amber);border-left-color:var(--amber)}
+.mobile-menu a:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+
+/* SECTIONS */
+.section{
+  display:none;min-height:calc(100vh - var(--nav-height));
+  padding-top:var(--nav-height);
+}
+.section.active{display:block;animation:fadeSection 0.5s ease}
+@keyframes fadeSection{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* HERO */
+.hero{
+  position:relative;min-height:calc(100vh - var(--nav-height));
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;padding:2rem clamp(1rem,5vw,4rem);
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;
+}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-badge{
+  display:inline-block;padding:0.35rem 1.2rem;
+  border:1px solid rgba(212,160,23,0.4);border-radius:2px;
+  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:1.5rem;
+  background:rgba(212,160,23,0.06);
+}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2.8rem,8vw,6rem);
+  font-weight:700;line-height:0.95;color:var(--text);
+  letter-spacing:0.02em;margin-bottom:0.6rem;
+}
+.hero h1 span{color:var(--amber);display:block;font-style:italic;font-size:0.45em;letter-spacing:0.12em;margin-top:0.3rem;font-weight:400}
+.hero-tagline{
+  font-family:var(--font-display);font-size:clamp(1.1rem,2.5vw,1.5rem);
+  color:var(--text-dim);font-style:italic;margin-bottom:0.5rem;
+  letter-spacing:0.03em;
+}
+.hero-sub{
+  font-size:clamp(0.8rem,1.5vw,0.95rem);color:var(--text-muted);
+  max-width:520px;margin:0 auto 2.5rem;line-height:1.5;
+}
+.cta-btn{
+  display:inline-block;padding:1rem 2.8rem;
+  background:var(--amber);color:var(--bg);
+  font-weight:700;font-size:0.85rem;letter-spacing:0.12em;
+  text-transform:uppercase;text-decoration:none;
+  border:none;cursor:pointer;position:relative;
+  transition:all 0.3s;overflow:hidden;
+}
+.cta-btn:hover{background:var(--amber-light);transform:translateY(-2px);box-shadow:0 8px 30px rgba(212,160,23,0.3)}
+.cta-btn::after{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  transition:left 0.5s;
+}
+.cta-btn:hover::after{left:100%}
+
+/* Service Preview Cards */
+.service-preview{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;padding:4rem clamp(1rem,5vw,4rem) 5rem;max-width:1200px;margin:0 auto;
+}
+.sp-card{
+  background:var(--bg2);border:1px solid rgba(255,255,255,0.04);
+  padding:2rem 1.5rem;position:relative;overflow:hidden;
+  transition:all 0.4s;opacity:0;transform:translateY(20px);
+}
+.sp-card.visible{opacity:1;transform:translateY(0)}
+.sp-card:hover{border-color:rgba(212,160,23,0.2);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.sp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--amber),var(--clay));
+  transform:scaleX(0);transition:transform 0.4s;transform-origin:left;
+}
+.sp-card:hover::before{transform:scaleX(1)}
+.sp-card svg{width:40px;height:40px;margin-bottom:1rem;color:var(--amber)}
+.sp-card h3{
+  font-family:var(--font-display);font-size:1.05rem;font-weight:700;
+  margin-bottom:0.5rem;color:var(--text);
+}
+.sp-card p{font-size:0.82rem;color:var(--text-muted);line-height:1.6}
+
+/* SERVICES PAGE */
+.services-hero{
+  padding:5rem clamp(1rem,5vw,4rem) 2rem;text-align:center;
+  background:linear-gradient(180deg,rgba(212,160,23,0.04) 0%,transparent 100%);
+}
+.services-hero h2{
+  font-family:var(--font-display);font-size:clamp(2rem,5vw,3.2rem);
+  color:var(--text);margin-bottom:0.5rem;
+}
+.services-hero p{color:var(--text-muted);max-width:600px;margin:0 auto;font-size:0.95rem}
+.section-label{
+  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:1rem;font-weight:600;
+}
+.services-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:2rem;padding:3rem clamp(1rem,5vw,4rem) 5rem;max-width:1200px;margin:0 auto;
+}
+.svc-card{
+  background:var(--bg2);border:1px solid rgba(255,255,255,0.04);
+  padding:2.5rem 2rem;position:relative;overflow:hidden;
+  transition:all 0.4s ease;
+}
+.svc-card:hover{
+  border-color:rgba(212,160,23,0.15);
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);transform:translateY(-3px);
+}
+.svc-card-icon{
+  width:56px;height:56px;margin-bottom:1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(212,160,23,0.08);border:1px solid rgba(212,160,23,0.15);
+}
+.svc-card-icon svg{width:28px;height:28px;color:var(--amber)}
+.svc-card h3{
+  font-family:var(--font-display);font-size:1.2rem;font-weight:700;
+  color:var(--text);margin-bottom:0.8rem;
+}
+.svc-card p{font-size:0.88rem;color:var(--text-dim);line-height:1.7}
+.svc-card-num{
+  position:absolute;top:1.5rem;right:1.5rem;
+  font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);
+  opacity:0.4;
+}
+
+/* ABOUT */
+.about-section{padding:5rem clamp(1rem,5vw,4rem);max-width:1100px;margin:0 auto}
+.about-header{margin-bottom:4rem;max-width:800px}
+.about-header h2{
+  font-family:var(--font-display);font-size:clamp(2rem,5vw,3rem);
+  color:var(--text);margin-bottom:1.5rem;line-height:1.1;
+}
+.about-header p{font-size:1rem;color:var(--text-dim);line-height:1.8}
+.about-divider{
+  width:60px;height:2px;background:var(--amber);margin:3rem 0;
+}
+.values-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;margin-bottom:5rem;
+}
+.value-item{padding:1.5rem 0;border-top:1px solid rgba(255,255,255,0.06)}
+.value-item h4{
+  font-family:var(--font-display);font-size:1.1rem;color:var(--amber);
+  margin-bottom:0.5rem;
+}
+.value-item p{font-size:0.88rem;color:var(--text-muted);line-height:1.6}
+.fleet-section h3{
+  font-family:var(--font-display);font-size:1.6rem;color:var(--text);
+  margin-bottom:2rem;
+}
+.fleet-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1.5rem;
+}
+.fleet-item{
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.04);
+  padding:2rem 1.5rem;text-align:center;transition:all 0.3s;
+}
+.fleet-item:hover{border-color:rgba(212,160,23,0.2)}
+.fleet-item svg{width:80px;height:60px;color:var(--amber);margin-bottom:1rem;opacity:0.8}
+.fleet-item span{display:block;font-size:0.8rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;font-weight:600}
+.about-local{
+  margin-top:4rem;padding:2rem;
+  border-left:3px solid var(--amber);
+  background:rgba(212,160,23,0.03);
+}
+.about-local p{font-family:var(--font-display);font-size:1.1rem;color:var(--text-dim);font-style:italic}
+
+/* GALLERY */
+.gallery-section{padding:5rem clamp(1rem,5vw,4rem);max-width:1200px;margin:0 auto}
+.gallery-section h2{
+  font-family:var(--font-display);font-size:clamp(2rem,5vw,3rem);
+  color:var(--text);margin-bottom:0.5rem;
+}
+.gallery-section>p{color:var(--text-muted);margin-bottom:3rem;font-size:0.95rem}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:1.2rem;
+}
+.gallery-panel{
+  position:relative;aspect-ratio:4/3;overflow:hidden;
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.04);
+  transition:all 0.4s;cursor:pointer;
+}
+.gallery-panel:hover{border-color:rgba(212,160,23,0.2);transform:scale(1.01)}
+.gallery-panel svg{width:100%;height:100%;display:block}
+.gallery-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.5rem;background:linear-gradient(transparent,rgba(15,15,14,0.9));
+  z-index:2;
+}
+.gallery-caption h4{font-family:var(--font-display);font-size:0.95rem;color:var(--text);margin-bottom:0.2rem}
+.gallery-caption span{font-size:0.75rem;color:var(--amber);letter-spacing:0.08em;text-transform:uppercase}
+
+/* CONTACT */
+.contact-section{padding:5rem clamp(1rem,5vw,4rem);max-width:1100px;margin:0 auto}
+.contact-section h2{
+  font-family:var(--font-display);font-size:clamp(2rem,5vw,3rem);
+  color:var(--text);margin-bottom:0.5rem;
+}
+.contact-section>p{color:var(--text-muted);margin-bottom:3rem;font-size:0.95rem}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 360px;gap:3rem;
+}
+.form-group{margin-bottom:1.5rem}
+.form-group label{
+  display:block;font-size:0.75rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem;font-weight:600;
+}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:0.9rem 1rem;
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.08);
+  color:var(--text);font-size:0.9rem;font-family:var(--font-body);
+  transition:border-color 0.3s;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  outline:none;border-color:var(--amber);
+}
+.form-group textarea{min-height:140px;resize:vertical}
+.form-group select{cursor:pointer;-webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%23a8a49a'%3E%3Cpath d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;
+}
+.form-group select option{background:var(--bg2);color:var(--text)}
+.submit-btn{
+  display:inline-block;padding:1rem 3rem;
+  background:var(--amber);color:var(--bg);
+  font-weight:700;font-size:0.85rem;letter-spacing:0.12em;
+  text-transform:uppercase;border:none;cursor:pointer;
+  transition:all 0.3s;width:100%;
+}
+.submit-btn:hover{background:var(--amber-light)}
+
+.contact-info{background:var(--bg2);padding:2.5rem;border:1px solid rgba(255,255,255,0.04)}
+.contact-info h3{
+  font-family:var(--font-display);font-size:1.2rem;color:var(--text);margin-bottom:2rem;
+}
+.ci-item{margin-bottom:2rem}
+.ci-item h4{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:0.4rem;font-weight:600}
+.ci-item p{font-size:0.9rem;color:var(--text-dim);line-height:1.6}
+.ci-item a{color:var(--text);text-decoration:none}
+.ci-item a:hover{color:var(--amber)}
+
+/* FOOTER */
+.footer{
+  padding:2rem clamp(1rem,5vw,4rem);
+  border-top:1px solid rgba(255,255,255,0.04);
+  text-align:center;
+  background:var(--bg);
+}
+.footer p{font-size:0.75rem;color:var(--text-muted)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:block}
+  .service-preview{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr}
+  .fleet-grid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:clamp(2.2rem,10vw,3.5rem)}
+}
+@media(max-width:480px){
+  .fleet-grid{grid-template-columns:1fr}
+  .sp-card{padding:1.5rem 1.2rem}
+}
+
+/* Utility animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;transform:translateY(24px);transition:all 0.6s cubic-bezier(0.22,1,0.36,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <path d="M16 2L4 28h6l2-5h8l2 5h6L16 2zm0 10l3 8h-6l3-8z" fill="currentColor"/>
+      <path d="M2 28h28v2H2z" fill="currentColor" opacity="0.4"/>
+    </svg>
+    Greenwood Landscaping
+  </div>
+  <ul class="nav-links">
+    <li><a class="nav-link active" data-tab="home">Home</a></li>
+    <li><a class="nav-link" data-tab="services">Services</a></li>
+    <li><a class="nav-link" data-tab="about">About</a></li>
+    <li><a class="nav-link" data-tab="gallery">Gallery</a></li>
+    <li><a class="nav-link" data-tab="contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+  <a class="mobile-link active" data-tab="home">Home</a>
+  <a class="mobile-link" data-tab="services">Services</a>
+  <a class="mobile-link" data-tab="about">About</a>
+  <a class="mobile-link" data-tab="gallery">Gallery</a>
+  <a class="mobile-link" data-tab="contact">Contact</a>
+</div>
+
+<!-- ========== HOME ========== -->
+<section class="section active" id="home">
+  <div class="hero">
+    <div class="hero-bg">
+      <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;position:absolute;top:0;left:0">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a1520"/>
+            <stop offset="40%" stop-color="#2a2035"/>
+            <stop offset="70%" stop-color="#3d2a1f"/>
+            <stop offset="100%" stop-color="#1a1510"/>
+          </linearGradient>
+          <linearGradient id="mtGrad1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2a3a2a"/>
+            <stop offset="100%" stop-color="#1a2a1a"/>
+          </linearGradient>
+          <linearGradient id="mtGrad2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1f2f1f"/>
+            <stop offset="100%" stop-color="#141e14"/>
+          </linearGradient>
+          <radialGradient id="sunGlow" cx="70%" cy="35%" r="30%">
+            <stop offset="0%" stop-color="rgba(212,160,23,0.15)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <!-- Sky -->
+        <rect width="1440" height="800" fill="url(#skyGrad)"/>
+        <rect width="1440" height="800" fill="url(#sunGlow)"/>
+        <!-- Stars -->
+        <circle cx="200" cy="80" r="1" fill="#f0ece4" opacity="0.3"/>
+        <circle cx="500" cy="120" r="0.8" fill="#f0ece4" opacity="0.2"/>
+        <circle cx="900" cy="60" r="1.2" fill="#f0ece4" opacity="0.25"/>
+        <circle cx="1200" cy="100" r="0.7" fill="#f0ece4" opacity="0.2"/>
+        <circle cx="1350" cy="150" r="1" fill="#f0ece4" opacity="0.15"/>
+        <!-- Far mountains -->
+        <path d="M0 450 L100 380 L200 410 L320 340 L420 370 L550 300 L650 350 L780 280 L900 330 L1000 290 L1100 320 L1200 270 L1300 310 L1440 350 L1440 800 L0 800Z" fill="url(#mtGrad1)" opacity="0.6"/>
+        <!-- Mid mountains (Blue Ridge) -->
+        <path d="M0 500 L80 440 L180 470 L280 400 L400 430 L500 370 L620 410 L720 360 L840 390 L950 350 L1060 380 L1180 330 L1280 370 L1380 340 L1440 380 L1440 800 L0 800Z" fill="url(#mtGrad2)" opacity="0.8"/>
+        <!-- Near ridge -->
+        <path d="M0 560 L120 520 L250 540 L380 500 L500 530 L620 490 L750 520 L880 480 L1000 510 L1120 490 L1250 510 L1380 490 L1440 500 L1440 800 L0 800Z" fill="#151f15"/>
+        <!-- Ground -->
+        <rect x="0" y="600" width="1440" height="200" fill="#0f150f"/>
+        <!-- Ground texture -->
+        <path d="M0 620 Q200 610 400 625 Q600 615 800 628 Q1000 618 1200 622 Q1350 612 1440 620 L1440 800 L0 800Z" fill="#121812"/>
+        <!-- Excavator silhouette -->
+        <g transform="translate(900,520)" fill="#0a0a0a" opacity="0.85">
+          <!-- Tracks -->
+          <rect x="0" y="55" width="120" height="22" rx="10" fill="#0d0d0c"/>
+          <rect x="5" y="60" width="110" height="12" rx="5" fill="#080808"/>
+          <!-- Body -->
+          <rect x="15" y="25" width="85" height="35" rx="3" fill="#111"/>
+          <rect x="20" y="20" width="45" height="10" rx="2" fill="#0e0e0e"/>
+          <!-- Cab -->
+          <rect x="60" y="5" width="35" height="25" rx="2" fill="#0d0d0c"/>
+          <rect x="63" y="8" width="18" height="14" rx="1" fill="#1a2520" opacity="0.5"/>
+          <!-- Boom -->
+          <path d="M30 25 L-40 -30 L-45 -25 L25 30Z" fill="#111" stroke="#1a1a18" stroke-width="0.5"/>
+          <!-- Stick -->
+          <path d="M-40 -30 L-90 10 L-85 15 L-38 -24Z" fill="#0e0e0e" stroke="#1a1a18" stroke-width="0.5"/>
+          <!-- Bucket -->
+          <path d="M-90 10 L-110 25 L-100 35 L-82 20Z" fill="#111"/>
+          <path d="M-110 25 L-115 30 L-105 40 L-100 35Z" fill="#0a0a0a"/>
+          <!-- Hydraulics -->
+          <line x1="55" y1="18" x2="-10" y2="-15" stroke="#1a1a18" stroke-width="2"/>
+          <line x1="-20" y1="-20" x2="-75" y2="5" stroke="#1a1a18" stroke-width="1.5"/>
+          <!-- Exhaust -->
+          <rect x="25" y="12" width="5" height="10" fill="#0a0a0a"/>
+        </g>
+        <!-- Dust particles near excavator -->
+        <circle cx="790" cy="565" r="3" fill="#8b7355" opacity="0.06"/>
+        <circle cx="810" cy="550" r="5" fill="#8b7355" opacity="0.04"/>
+        <circle cx="770" cy="570" r="4" fill="#8b7355" opacity="0.05"/>
+        <!-- Amber horizon glow -->
+        <rect x="0" y="460" width="1440" height="60" fill="url(#sunGlow)" opacity="0.3"/>
+        <!-- Foreground overlay -->
+        <rect x="0" y="700" width="1440" height="100" fill="var(--bg)" opacity="0.8"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">Charlottesville, Virginia</div>
+      <h1>GREENWOOD<br>LANDSCAPING<span>Est. Charlottesville, VA</span></h1>
+      <p class="hero-tagline">Moving Earth. Building Trust.</p>
+      <p class="hero-sub">Heavy equipment land services for Charlottesville, Albemarle County &amp; the Blue Ridge foothills.</p>
+      <a class="cta-btn" onclick="switchTab('contact')">Get a Free Estimate</a>
+    </div>
+  </div>
+
+  <!-- Service Preview Cards -->
+  <div class="service-preview">
+    <div class="sp-card">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 32 L20 8 L32 32" stroke-linejoin="round"/>
+        <path d="M4 35 L14 20 M26 20 L36 35" opacity="0.4"/>
+        <line x1="5" y1="36" x2="35" y2="36"/>
+      </svg>
+      <h3>Land &amp; Brush Clearing</h3>
+      <p>Heavy equipment clearing for building sites, pasture restoration, and overgrown parcels.</p>
+    </div>
+    <div class="sp-card">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="6" y="22" width="28" height="10" rx="2"/>
+        <path d="M12 22 L12 14 L6 8 L2 12 L8 18"/>
+        <circle cx="10" cy="32" r="3"/>
+        <circle cx="30" cy="32" r="3"/>
+      </svg>
+      <h3>Earth Moving</h3>
+      <p>Foundation digs, pond excavation, and large-scale grade changes with serious iron.</p>
+    </div>
+    <div class="sp-card">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 30 Q10 20 20 22 Q30 24 36 18"/>
+        <path d="M4 34 Q10 28 20 30 Q30 32 36 26" opacity="0.4"/>
+        <line x1="20" y1="10" x2="20" y2="22" stroke-dasharray="2 2"/>
+        <polygon points="18,10 22,10 20,6" fill="currentColor"/>
+      </svg>
+      <h3>Grading &amp; Site Prep</h3>
+      <p>Precision grading for construction pads, drainage, and new builds.</p>
+    </div>
+    <div class="sp-card">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 36 L6 20 L12 18 L12 28 L18 26 L18 22 L24 20 L24 30 L30 28 L30 16 L36 14"/>
+        <line x1="4" y1="36" x2="38" y2="36" opacity="0.3"/>
+      </svg>
+      <h3>Retaining Walls</h3>
+      <p>Block, boulder, and timber walls engineered for Virginia's rolling terrain.</p>
+    </div>
+    <div class="sp-card">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 34 Q12 30 20 28 Q28 26 36 20"/>
+        <path d="M4 34 Q12 32 20 31 Q28 30 36 28" opacity="0.3"/>
+        <circle cx="10" cy="20" r="4" opacity="0.3"/>
+        <circle cx="30" cy="14" r="3" opacity="0.3"/>
+        <circle cx="22" cy="16" r="5" opacity="0.2"/>
+      </svg>
+      <h3>Driveways &amp; Roads</h3>
+      <p>Full-build gravel and residential driveways — clearing through surface.</p>
+    </div>
+    <div class="sp-card">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 24 Q10 18 14 24 Q18 18 22 24 Q26 18 30 24 Q34 18 38 24"/>
+        <line x1="6" y1="32" x2="38" y2="32"/>
+        <line x1="6" y1="28" x2="38" y2="28" opacity="0.3"/>
+        <rect x="16" y="28" width="12" height="6" rx="1" opacity="0.5"/>
+      </svg>
+      <h3>Bushhogging</h3>
+      <p>Commercial mowing for large acreage, fields, fence lines, and overgrown lots.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section class="section" id="services">
+  <div class="services-hero">
+    <p class="section-label">What We Do</p>
+    <h2>Our Services</h2>
+    <p>From raw land to finished grade — we bring the heavy equipment and expertise to get it done right.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card fade-up">
+      <span class="svc-card-num">01</span>
+      <div class="svc-card-icon">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 24L14 4L22 24" stroke-linejoin="round"/>
+          <path d="M3 26L10 16M18 16L25 26" opacity="0.5"/>
+          <line x1="3" y1="27" x2="25" y2="27"/>
+          <line x1="10" y1="24" x2="18" y2="24" stroke-dasharray="1.5 1.5"/>
+        </svg>
+      </div>
+      <h3>Land &amp; Brush Clearing</h3>
+      <p>Reclaim overgrown land with precision. Our heavy equipment fleet makes quick work of dense brush, saplings, and undergrowth — whether you're prepping a building site or restoring pasture land.</p>
+    </div>
+    <div class="svc-card fade-up">
+      <span class="svc-card-num">02</span>
+      <div class="svc-card-icon">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="16" width="20" height="7" rx="1.5"/>
+          <path d="M9 16L9 10L5 6L2 8L6 13"/>
+          <circle cx="8" cy="23" r="2.5"/>
+          <circle cx="20" cy="23" r="2.5"/>
+          <path d="M7 6L4 3" opacity="0.4"/>
+        </svg>
+      </div>
+      <h3>Earth Moving &amp; Excavation</h3>
+      <p>From foundation digs to pond excavation, we move serious volume. Our operators handle everything from surgical cuts to massive grade changes with the right iron for the job.</p>
+    </div>
+    <div class="svc-card fade-up">
+      <span class="svc-card-num">03</span>
+      <div class="svc-card-icon">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 22Q8 14 14 16Q20 18 26 12"/>
+          <path d="M2 25Q8 20 14 21Q20 22 26 18" opacity="0.4"/>
+          <line x1="14" y1="6" x2="14" y2="16" stroke-dasharray="2 2"/>
+          <polygon points="12,6 16,6 14,2" fill="currentColor"/>
+        </svg>
+      </div>
+      <h3>Grading &amp; Site Preparation</h3>
+      <p>Level ground is the foundation of every good project. We grade for new construction, drainage correction, and pad preparation with laser-guided precision.</p>
+    </div>
+    <div class="svc-card fade-up">
+      <span class="svc-card-num">04</span>
+      <div class="svc-card-icon">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 26L4 14L8 12L8 20L12 18L12 16L16 14L16 22L20 20L20 10L24 8"/>
+          <line x1="2" y1="26" x2="26" y2="26" opacity="0.3"/>
+        </svg>
+      </div>
+      <h3>Retaining Walls</h3>
+      <p>Engineered retaining walls that hold. We build with block, boulder, and timber to manage slopes, prevent erosion, and create usable space on Virginia's rolling terrain.</p>
+    </div>
+    <div class="svc-card fade-up">
+      <span class="svc-card-num">05</span>
+      <div class="svc-card-icon">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 24Q8 22 14 20Q20 18 26 14"/>
+          <path d="M2 24Q8 23 14 22Q20 21 26 20" opacity="0.3"/>
+          <circle cx="8" cy="14" r="3" opacity="0.3"/>
+          <circle cx="20" cy="10" r="2.5" opacity="0.3"/>
+        </svg>
+      </div>
+      <h3>Driveways &amp; Access Roads</h3>
+      <p>From gravel farm lanes to finished residential driveways, we handle the full build — clearing, grading, base prep, and surface. Built to last through Virginia weather.</p>
+    </div>
+    <div class="svc-card fade-up">
+      <span class="svc-card-num">06</span>
+      <div class="svc-card-icon">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 18Q7 12 10 18Q13 12 16 18Q19 12 22 18Q25 12 28 18"/>
+          <line x1="4" y1="24" x2="26" y2="24"/>
+          <rect x="12" y="20" width="8" height="5" rx="1" opacity="0.5"/>
+        </svg>
+      </div>
+      <h3>Bushhogging &amp; Mowing</h3>
+      <p>Keep large acreage under control. Our commercial mowing equipment handles fields, fence lines, and overgrown lots that standard mowers can't touch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section class="section" id="about">
+  <div class="about-section">
+    <div class="about-header">
+      <p class="section-label">About Us</p>
+      <h2>Heavy Iron.<br>Local Roots.</h2>
+      <div class="about-divider"></div>
+      <p>Greenwood Landscaping was built on a simple idea: bring the right equipment and the right operator to every job. Based in Charlottesville, Virginia, we serve homeowners, farmers, contractors, and developers across Albemarle County and the surrounding Blue Ridge foothills.</p>
+      <br>
+      <p>We're not a franchise. We're not a crew with a truck and a chainsaw. We run heavy iron — excavators, skid steers, dozers, and commercial mowing rigs — because that's what it takes to do the job right, on time, and without cutting corners.</p>
+    </div>
+
+    <div class="values-grid">
+      <div class="value-item fade-up">
+        <h4>Reliability</h4>
+        <p>We show up when we say we will, with the right equipment for the job. No excuses, no delays, no half-measures. Our reputation is built one completed project at a time.</p>
+      </div>
+      <div class="value-item fade-up">
+        <h4>Local Knowledge</h4>
+        <p>Virginia soil, Virginia grades, Virginia weather — we know the land because we live on it. From the red clay of Albemarle to the rocky slopes of the Blue Ridge, we understand what the terrain demands.</p>
+      </div>
+      <div class="value-item fade-up">
+        <h4>Right Equipment</h4>
+        <p>Every job gets the right machine. We don't show up with undersized equipment and hope for the best. Our fleet is built to handle real work — efficiently, safely, and on schedule.</p>
+      </div>
+    </div>
+
+    <div class="fleet-section">
+      <h3>Our Fleet</h3>
+      <div class="fleet-grid">
+        <div class="fleet-item fade-up">
+          <svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.2">
+            <!-- Excavator -->
+            <rect x="30" y="50" width="60" height="14" rx="6" fill="none"/>
+            <rect x="35" y="55" width="50" height="5" rx="2" opacity="0.4"/>
+            <rect x="40" y="30" width="40" height="22" rx="2"/>
+            <rect x="45" y="24" width="22" height="10" rx="1"/>
+            <rect x="70" y="18" width="18" height="16" rx="1"/>
+            <rect x="72" y="20" width="10" height="9" rx="1" opacity="0.3" fill="currentColor"/>
+            <path d="M50 30L30 10L26 14L44 34" stroke-width="2"/>
+            <path d="M30 10L10 30L14 34L32 16" stroke-width="1.8"/>
+            <path d="M10 30L4 38L10 42L14 34"/>
+            <line x1="60" y1="28" x2="38" y2="14" stroke-width="1"/>
+            <rect x="48" y="20" width="3" height="6"/>
+          </svg>
+          <span>Excavators</span>
+        </div>
+        <div class="fleet-item fade-up">
+          <svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.2">
+            <!-- Skid Steer -->
+            <rect x="25" y="35" width="70" height="25" rx="3"/>
+            <rect x="30" y="28" width="30" height="12" rx="2"/>
+            <rect x="32" y="30" width="14" height="8" rx="1" opacity="0.3" fill="currentColor"/>
+            <path d="M25 45L10 35L6 30L4 34L8 38L22 48" stroke-width="1.5"/>
+            <rect x="4" y="28" width="8" height="4" rx="1"/>
+            <rect x="28" y="60" width="16" height="10" rx="4"/>
+            <rect x="72" y="60" width="16" height="10" rx="4"/>
+            <line x1="30" y1="65" x2="86" y2="65" opacity="0.3"/>
+          </svg>
+          <span>Skid Steers</span>
+        </div>
+        <div class="fleet-item fade-up">
+          <svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.2">
+            <!-- Dozer -->
+            <rect x="20" y="30" width="75" height="24" rx="3"/>
+            <rect x="60" y="18" width="30" height="16" rx="2"/>
+            <rect x="63" y="20" width="16" height="10" rx="1" opacity="0.3" fill="currentColor"/>
+            <path d="M20 42L10 42L8 28L12 24L16 28L20 34" stroke-width="1.5"/>
+            <rect x="4" y="26" width="10" height="20" rx="1"/>
+            <rect x="22" y="54" width="72" height="10" rx="4"/>
+            <rect x="30" y="56" width="56" height="6" rx="2" opacity="0.3"/>
+            <rect x="42" y="24" width="4" height="10"/>
+          </svg>
+          <span>Dozers</span>
+        </div>
+        <div class="fleet-item fade-up">
+          <svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.2">
+            <!-- Dump Truck -->
+            <path d="M15 35L15 55L95 55L95 25L60 25L60 35Z"/>
+            <rect x="60" y="20" width="35" height="20" rx="2"/>
+            <rect x="65" y="22" width="14" height="12" rx="1" opacity="0.3" fill="currentColor"/>
+            <circle cx="30" cy="60" r="7"/>
+            <circle cx="30" cy="60" r="4" opacity="0.4"/>
+            <circle cx="78" cy="60" r="7"/>
+            <circle cx="78" cy="60" r="4" opacity="0.4"/>
+            <circle cx="92" cy="60" r="7"/>
+            <circle cx="92" cy="60" r="4" opacity="0.4"/>
+            <line x1="15" y1="32" x2="55" y2="32" opacity="0.3"/>
+          </svg>
+          <span>Dump Trucks</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-local fade-up">
+      <p>"Locally owned and operated in Charlottesville, Virginia — proudly serving the Blue Ridge foothills since day one."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GALLERY ========== -->
+<section class="section" id="gallery">
+  <div class="gallery-section">
+    <p class="section-label">Our Work</p>
+    <h2>Project Gallery</h2>
+    <p>A selection of recent projects across Charlottesville and the surrounding counties.</p>
+    <div class="gallery-grid">
+
+      <!-- Panel 1: Mountain landscape with cleared lot -->
+      <div class="gallery-panel fade-up">
+        <svg viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gSky1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4a6fa5"/>
+              <stop offset="60%" stop-color="#87a5c4"/>
+              <stop offset="100%" stop-color="#c4d4b8"/>
+            </linearGradient>
+            <linearGradient id="gMt1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5a7a5a"/>
+              <stop offset="100%" stop-color="#3a5a3a"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#gSky1)"/>
+          <!-- Far mountains -->
+          <path d="M0 220L60 180L150 200L240 160L340 190L420 150L520 180L600 160V450H0Z" fill="#6a8a6a" opacity="0.5"/>
+          <!-- Near mountains -->
+          <path d="M0 280L80 240L180 260L280 220L380 250L480 210L560 240L600 220V450H0Z" fill="url(#gMt1)"/>
+          <!-- Treeline -->
+          <path d="M0 310L20 300L40 310L60 295L80 310L100 300L120 312L140 298L160 310L180 302L200 312L220 296L240 308L260 300L280 310L300 295L320 308L340 300L360 312L380 296L400 310L420 302L440 310L460 298L480 308L500 300L520 312L540 296L560 308L580 300L600 310V450H0Z" fill="#2a4a2a"/>
+          <!-- Cleared lot (light earth) -->
+          <rect x="100" y="340" width="400" height="110" fill="#9a8a6a" rx="0"/>
+          <path d="M100 340Q200 335 300 342Q400 335 500 340V450H100Z" fill="#a89870"/>
+          <!-- Scattered earth detail -->
+          <circle cx="200" cy="380" r="15" fill="#8a7a5a" opacity="0.3"/>
+          <circle cx="350" cy="370" r="20" fill="#8a7a5a" opacity="0.2"/>
+          <circle cx="450" cy="390" r="12" fill="#8a7a5a" opacity="0.3"/>
+          <!-- Stumps -->
+          <rect x="180" y="355" width="8" height="6" fill="#5a4a3a" rx="1"/>
+          <rect x="320" y="360" width="6" height="5" fill="#5a4a3a" rx="1"/>
+          <rect x="420" y="350" width="7" height="5" fill="#5a4a3a" rx="1"/>
+          <!-- Edge trees -->
+          <path d="M80 320L80 450" stroke="#1a3a1a" stroke-width="3"/>
+          <circle cx="80" cy="308" r="16" fill="#2a4a2a"/>
+          <path d="M520 325L520 450" stroke="#1a3a1a" stroke-width="3"/>
+          <circle cx="520" cy="312" r="14" fill="#2a4a2a"/>
+        </svg>
+        <div class="gallery-caption">
+          <h4>2-Acre Lot Clearing</h4>
+          <span>Ivy, VA</span>
+        </div>
+      </div>
+
+      <!-- Panel 2: Excavator on hillside -->
+      <div class="gallery-panel fade-up">
+        <svg viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gSky2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e8a040"/>
+              <stop offset="40%" stop-color="#d48030"/>
+              <stop offset="100%" stop-color="#4a3020"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#gSky2)"/>
+          <!-- Sun -->
+          <circle cx="480" cy="120" r="50" fill="#f0c060" opacity="0.6"/>
+          <circle cx="480" cy="120" r="35" fill="#f8d878" opacity="0.4"/>
+          <!-- Hill slope -->
+          <path d="M0 300L200 200L400 250L600 180V450H0Z" fill="#5a4a30"/>
+          <path d="M0 320L200 220L400 270L600 200V450H0Z" fill="#4a3a20"/>
+          <!-- Exposed earth on cut -->
+          <path d="M150 240L350 310L350 450L150 450Z" fill="#8a6a40" opacity="0.4"/>
+          <!-- Excavator silhouette on hill -->
+          <g transform="translate(260,210) scale(1.8)" fill="#1a1008" opacity="0.9">
+            <rect x="0" y="28" width="50" height="10" rx="4"/>
+            <rect x="5" y="14" width="35" height="16" rx="2"/>
+            <rect x="28" y="6" width="14" height="12" rx="1"/>
+            <rect x="30" y="8" width="6" height="6" rx="0.5" fill="#3a2a10" opacity="0.4"/>
+            <path d="M18 14L4 -4L0 -1L14 17" stroke-width="2" stroke="#1a1008" fill="none"/>
+            <path d="M4 -4L-12 12L-8 15L6 0" stroke-width="1.5" stroke="#1a1008" fill="none"/>
+            <path d="M-12 12L-18 20L-12 24L-8 16" fill="#1a1008"/>
+          </g>
+          <!-- Dust -->
+          <circle cx="220" cy="280" r="20" fill="#c8a060" opacity="0.08"/>
+          <circle cx="240" cy="270" r="30" fill="#c8a060" opacity="0.06"/>
+          <circle cx="200" cy="290" r="15" fill="#c8a060" opacity="0.07"/>
+        </svg>
+        <div class="gallery-caption">
+          <h4>Hillside Excavation</h4>
+          <span>Free Union, VA</span>
+        </div>
+      </div>
+
+      <!-- Panel 3: Gravel driveway through trees -->
+      <div class="gallery-panel fade-up">
+        <svg viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gSky3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5a8aaa"/>
+              <stop offset="100%" stop-color="#8ab4a4"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#gSky3)"/>
+          <!-- Tree canopy -->
+          <circle cx="80" cy="120" r="80" fill="#3a6a3a" opacity="0.7"/>
+          <circle cx="200" cy="100" r="70" fill="#4a7a4a" opacity="0.6"/>
+          <circle cx="400" cy="110" r="75" fill="#3a6a3a" opacity="0.7"/>
+          <circle cx="520" cy="130" r="85" fill="#4a7a4a" opacity="0.6"/>
+          <circle cx="140" cy="160" r="60" fill="#2a5a2a" opacity="0.8"/>
+          <circle cx="460" cy="150" r="65" fill="#2a5a2a" opacity="0.8"/>
+          <!-- Ground -->
+          <rect x="0" y="250" width="600" height="200" fill="#3a5a2a"/>
+          <!-- Driveway - perspective -->
+          <path d="M230 450L270 250Q280 200 300 180Q320 200 330 250L370 450Z" fill="#b8a888"/>
+          <path d="M240 450L275 260Q285 215 300 200Q315 215 325 260L360 450Z" fill="#c8b898" opacity="0.5"/>
+          <!-- Gravel texture -->
+          <circle cx="290" cy="350" r="2" fill="#a89878" opacity="0.5"/>
+          <circle cx="310" cy="380" r="1.5" fill="#a89878" opacity="0.4"/>
+          <circle cx="300" cy="320" r="2" fill="#a89878" opacity="0.5"/>
+          <circle cx="295" cy="400" r="2.5" fill="#a89878" opacity="0.4"/>
+          <circle cx="305" cy="290" r="1.5" fill="#a89878" opacity="0.5"/>
+          <!-- Tree trunks along driveway -->
+          <rect x="210" y="200" width="6" height="100" fill="#3a2a1a"/>
+          <circle cx="213" cy="185" r="30" fill="#2a5a2a"/>
+          <rect x="380" y="210" width="5" height="90" fill="#3a2a1a"/>
+          <circle cx="382" cy="195" r="28" fill="#2a5a2a"/>
+          <rect x="170" y="280" width="5" height="80" fill="#3a2a1a"/>
+          <circle cx="172" cy="268" r="25" fill="#3a6a3a"/>
+          <rect x="420" y="270" width="5" height="80" fill="#3a2a1a"/>
+          <circle cx="422" cy="258" r="26" fill="#3a6a3a"/>
+          <!-- Fence posts -->
+          <rect x="230" y="300" width="3" height="25" fill="#5a4a3a"/>
+          <rect x="365" y="305" width="3" height="25" fill="#5a4a3a"/>
+        </svg>
+        <div class="gallery-caption">
+          <h4>Driveway Installation</h4>
+          <span>Crozet, VA</span>
+        </div>
+      </div>
+
+      <!-- Panel 4: Stone retaining wall -->
+      <div class="gallery-panel fade-up">
+        <svg viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gSky4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#6a9aba"/>
+              <stop offset="100%" stop-color="#a0c4a4"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#gSky4)"/>
+          <!-- Upper slope with grass -->
+          <path d="M0 100L600 100L600 250L0 280Z" fill="#5a8a4a"/>
+          <path d="M0 120L600 120L600 260L0 290Z" fill="#4a7a3a"/>
+          <!-- Retaining wall -->
+          <g fill="#8a8a7a" stroke="#6a6a5a" stroke-width="0.5">
+            <!-- Row 1 -->
+            <rect x="0" y="260" width="55" height="28" rx="2"/>
+            <rect x="58" y="258" width="70" height="30" rx="2"/>
+            <rect x="131" y="256" width="50" height="30" rx="2"/>
+            <rect x="184" y="254" width="65" height="30" rx="2"/>
+            <rect x="252" y="252" width="55" height="28" rx="2"/>
+            <rect x="310" y="250" width="72" height="30" rx="2"/>
+            <rect x="385" y="248" width="50" height="28" rx="2"/>
+            <rect x="438" y="246" width="68" height="30" rx="2"/>
+            <rect x="509" y="244" width="55" height="28" rx="2"/>
+            <rect x="567" y="242" width="35" height="28" rx="2"/>
+            <!-- Row 2 -->
+            <rect x="0" y="290" width="65" height="30" rx="2" fill="#7a7a6a"/>
+            <rect x="68" y="288" width="55" height="30" rx="2" fill="#7a7a6a"/>
+            <rect x="126" y="286" width="72" height="30" rx="2" fill="#7a7a6a"/>
+            <rect x="201" y="284" width="50" height="30" rx="2" fill="#7a7a6a"/>
+            <rect x="254" y="282" width="68" height="30" rx="2" fill="#7a7a6a"/>
+            <rect x="325" y="280" width="55" height="28" rx="2" fill="#7a7a6a"/>
+            <rect x="383" y="278" width="70" height="30" rx="2" fill="#7a7a6a"/>
+            <rect x="456" y="276" width="55" height="28" rx="2" fill="#7a7a6a"/>
+            <rect x="514" y="274" width="65" height="30" rx="2" fill="#7a7a6a"/>
+            <rect x="582" y="272" width="20" height="28" rx="2" fill="#7a7a6a"/>
+            <!-- Row 3 -->
+            <rect x="0" y="322" width="50" height="28" rx="2" fill="#6a6a5a"/>
+            <rect x="53" y="320" width="72" height="30" rx="2" fill="#6a6a5a"/>
+            <rect x="128" y="318" width="55" height="28" rx="2" fill="#6a6a5a"/>
+            <rect x="186" y="316" width="68" height="30" rx="2" fill="#6a6a5a"/>
+            <rect x="257" y="314" width="50" height="28" rx="2" fill="#6a6a5a"/>
+            <rect x="310" y="312" width="72" height="30" rx="2" fill="#6a6a5a"/>
+            <rect x="385" y="310" width="55" height="28" rx="2" fill="#6a6a5a"/>
+            <rect x="443" y="308" width="65" height="30" rx="2" fill="#6a6a5a"/>
+            <rect x="511" y="306" width="55" height="28" rx="2" fill="#6a6a5a"/>
+            <rect x="569" y="304" width="35" height="28" rx="2" fill="#6a6a5a"/>
+          </g>
+          <!-- Lower ground -->
+          <rect x="0" y="350" width="600" height="100" fill="#5a8a4a"/>
+          <path d="M0 355Q150 350 300 358Q450 350 600 355V450H0Z" fill="#4a7a3a"/>
+          <!-- Grass tufts on top -->
+          <path d="M50 260L55 240L60 258" stroke="#5a9a4a" stroke-width="1.5" fill="none"/>
+          <path d="M150 252L155 234L160 250" stroke="#5a9a4a" stroke-width="1.5" fill="none"/>
+          <path d="M300 248L305 230L310 246" stroke="#5a9a4a" stroke-width="1.5" fill="none"/>
+          <path d="M450 244L455 226L460 242" stroke="#5a9a4a" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="gallery-caption">
+          <h4>Boulder Retaining Wall</h4>
+          <span>Earlysville, VA</span>
+        </div>
+      </div>
+
+      <!-- Panel 5: Before/After -->
+      <div class="gallery-panel fade-up">
+        <svg viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice">
+          <!-- Before side -->
+          <rect x="0" y="0" width="300" height="450" fill="#2a3a20"/>
+          <!-- Dense overgrowth -->
+          <circle cx="50" cy="150" r="40" fill="#3a5a2a"/>
+          <circle cx="120" cy="130" r="50" fill="#2a4a1a"/>
+          <circle cx="80" cy="200" r="45" fill="#3a5a2a"/>
+          <circle cx="180" cy="160" r="55" fill="#2a4a1a"/>
+          <circle cx="240" cy="140" r="45" fill="#3a5a2a"/>
+          <circle cx="150" cy="230" r="50" fill="#2a4a1a"/>
+          <circle cx="60" cy="280" r="40" fill="#3a5a2a"/>
+          <circle cx="200" cy="270" r="55" fill="#2a4a1a"/>
+          <circle cx="270" cy="250" r="40" fill="#3a5a2a"/>
+          <circle cx="100" cy="320" r="50" fill="#2a4a1a"/>
+          <circle cx="220" cy="340" r="45" fill="#3a5a2a"/>
+          <!-- Ground -->
+          <rect x="0" y="360" width="300" height="90" fill="#2a3a1a"/>
+          <!-- Label -->
+          <rect x="10" y="10" width="70" height="24" rx="2" fill="rgba(0,0,0,0.6)"/>
+          <text x="45" y="26" font-family="Georgia,serif" font-size="12" fill="#f0ece4" text-anchor="middle" font-weight="bold">BEFORE</text>
+
+          <!-- Divider -->
+          <line x1="300" y1="0" x2="300" y2="450" stroke="var(--amber)" stroke-width="3"/>
+
+          <!-- After side -->
+          <rect x="300" y="0" width="300" height="450" fill="#6a9aba"/>
+          <!-- Clean sky -->
+          <rect x="300" y="0" width="300" height="200" fill="#7aaaca"/>
+          <!-- Few trees remaining at edges -->
+          <rect x="310" y="180" width="4" height="60" fill="#3a2a1a"/>
+          <circle cx="312" cy="170" r="18" fill="#4a7a3a"/>
+          <rect x="580" y="190" width="4" height="55" fill="#3a2a1a"/>
+          <circle cx="582" cy="180" r="16" fill="#4a7a3a"/>
+          <!-- Clear ground -->
+          <rect x="300" y="250" width="300" height="200" fill="#a89870"/>
+          <path d="M300 260Q400 255 500 262Q550 258 600 260V450H300Z" fill="#b8a880"/>
+          <!-- Clean lines -->
+          <path d="M320 300L580 300" stroke="#9a8a6a" stroke-width="0.5" opacity="0.3"/>
+          <!-- Label -->
+          <rect x="310" y="10" width="60" height="24" rx="2" fill="rgba(0,0,0,0.6)"/>
+          <text x="340" y="26" font-family="Georgia,serif" font-size="12" fill="#d4a017" text-anchor="middle" font-weight="bold">AFTER</text>
+        </svg>
+        <div class="gallery-caption">
+          <h4>Brush Clearing — Before &amp; After</h4>
+          <span>Batesville, VA</span>
+        </div>
+      </div>
+
+      <!-- Panel 6: Dozer pushing earth -->
+      <div class="gallery-panel fade-up">
+        <svg viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gSky6" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8aaa cc"/>
+              <stop offset="100%" stop-color="#c4d4b8"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="#8aaabb"/>
+          <!-- Clouds -->
+          <ellipse cx="150" cy="80" rx="80" ry="30" fill="#a0baca" opacity="0.5"/>
+          <ellipse cx="450" cy="60" rx="100" ry="25" fill="#a0baca" opacity="0.4"/>
+          <!-- Ground -->
+          <rect x="0" y="280" width="600" height="170" fill="#8a7a5a"/>
+          <path d="M0 290Q150 280 300 295Q450 285 600 290V450H0Z" fill="#9a8a6a"/>
+          <!-- Earth being pushed -->
+          <path d="M180 280Q200 240 250 260Q260 250 280 270L300 280Z" fill="#a08050"/>
+          <path d="M190 285Q210 260 240 270Q260 258 275 275L290 285Z" fill="#b09060"/>
+          <!-- Dozer -->
+          <g transform="translate(300,240) scale(2.2)" fill="#2a2a20">
+            <rect x="0" y="14" width="55" height="16" rx="2"/>
+            <rect x="35" y="4" width="18" height="14" rx="1"/>
+            <rect x="37" y="6" width="9" height="7" rx="0.5" fill="#4a5a5a" opacity="0.3"/>
+            <path d="M0 22L-8 22L-10 10L-6 6L-2 10L0 16" stroke-width="0.8" stroke="#2a2a20" fill="#2a2a20"/>
+            <rect x="-12" y="8" width="6" height="16" rx="0.5"/>
+            <rect x="2" y="30" width="52" height="6" rx="2.5"/>
+            <rect x="6" y="31.5" width="44" height="3" rx="1" opacity="0.4"/>
+            <rect x="22" y="8" width="3" height="8"/>
+          </g>
+          <!-- Dust cloud -->
+          <circle cx="200" cy="270" r="25" fill="#c8b080" opacity="0.1"/>
+          <circle cx="230" cy="260" r="35" fill="#c8b080" opacity="0.08"/>
+          <circle cx="170" cy="280" r="20" fill="#c8b080" opacity="0.12"/>
+          <circle cx="250" cy="250" r="18" fill="#c8b080" opacity="0.06"/>
+          <circle cx="210" cy="245" r="15" fill="#c8b080" opacity="0.07"/>
+          <!-- Tracks in earth -->
+          <path d="M420 310L580 310" stroke="#7a6a4a" stroke-width="1" opacity="0.3"/>
+          <path d="M430 320L590 320" stroke="#7a6a4a" stroke-width="1" opacity="0.3"/>
+        </svg>
+        <div class="gallery-caption">
+          <h4>Site Grading — New Construction</h4>
+          <span>Keswick, VA</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="section" id="contact">
+  <div class="contact-section">
+    <p class="section-label">Get In Touch</p>
+    <h2>Ready to Get Started?</h2>
+    <p>Tell us about your project. We'll get back to you within one business day with a plan and estimate.</p>
+
+    <div class="contact-grid">
+      <form onsubmit="event.preventDefault();alert('This is a mockup — form submission is not active.')">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="John Smith">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(434) 555-0000">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label for="service">Service Needed</label>
+          <select id="service">
+            <option value="">Select a service...</option>
+            <option>Land &amp; Brush Clearing</option>
+            <option>Earth Moving &amp; Excavation</option>
+            <option>Grading &amp; Site Prep</option>
+            <option>Retaining Walls</option>
+            <option>Driveways &amp; Access Roads</option>
+            <option>Bushhogging &amp; Mowing</option>
+            <option>Multiple Services / Not Sure</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="desc">Project Description</label>
+          <textarea id="desc" placeholder="Tell us about your property, the work you need done, timeline, and any other details..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Request</button>
+      </form>
+
+      <div class="contact-info">
+        <h3>Contact Info</h3>
+        <div class="ci-item">
+          <h4>Phone</h4>
+          <p><a href="tel:4345550187">(434) 555-0187</a></p>
+        </div>
+        <div class="ci-item">
+          <h4>Email</h4>
+          <p><a href="mailto:info@greenwoodlandscaping.com">info@greenwoodlandscaping.com</a></p>
+        </div>
+        <div class="ci-item">
+          <h4>Service Area</h4>
+          <p>Charlottesville, Albemarle County, Greene County, Nelson County, Fluvanna County, and surrounding areas within the Central Virginia / Blue Ridge region.</p>
+        </div>
+        <div class="ci-item">
+          <h4>Hours</h4>
+          <p>Monday – Friday: 7:00 AM – 6:00 PM<br>Saturday: 8:00 AM – 2:00 PM<br>Sunday: Closed</p>
+        </div>
+        <div class="ci-item">
+          <h4>Emergency / After Hours</h4>
+          <p>For urgent storm damage or emergency clearing, call our main line — we monitor after hours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2026 Greenwood Landscaping &nbsp;|&nbsp; Charlottesville, Virginia &nbsp;|&nbsp; All rights reserved.</p>
+  </footer>
+</section>
+
+<script>
+// Tab Navigation
+function switchTab(tabName) {
+  // Update sections
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(tabName).classList.add('active');
+
+  // Update nav links
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.dataset.tab === tabName);
+  });
+  document.querySelectorAll('.mobile-link').forEach(l => {
+    l.classList.toggle('active', l.dataset.tab === tabName);
+  });
+
+  // Close mobile menu
+  document.querySelector('.mobile-menu').classList.remove('open');
+  document.querySelector('.hamburger').classList.remove('open');
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Trigger fade-up animations for new section
+  setTimeout(() => triggerAnimations(), 100);
+}
+
+// Nav link clicks
+document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
+  link.addEventListener('click', () => switchTab(link.dataset.tab));
+});
+
+// Hamburger toggle
+document.querySelector('.hamburger').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.querySelector('.mobile-menu').classList.toggle('open');
+});
+
+// Intersection Observer for fade-up animations
+function triggerAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up:not(.visible), .sp-card:not(.visible)').forEach(el => {
+    observer.observe(el);
+  });
+}
+
+// Stagger service preview cards
+function staggerCards() {
+  const cards = document.querySelectorAll('.sp-card');
+  cards.forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+}
+
+// Init
+staggerCards();
+triggerAnimations();
+
+// Re-trigger on tab switch
+document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    setTimeout(triggerAnimations, 200);
+  });
+});
+</script>
+</body>
+</html>
